@@ -1,7 +1,9 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CategoriesService, Category } from '../categories.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import * as $ from 'jquery';
+
 //import { Router } from '@angular/router';
 
 @Component({
@@ -13,9 +15,17 @@ export class CategoryAddComponent implements OnInit {
 
   categoryForm: FormGroup;
   CategoryArr: any = [];
+  showMsg = false;
+  message = '';
+  show_submit: any; 
+  submitted = false;
 
   ngOnInit() {
-    this.addCategory()
+    this.addCategory();
+    this.show_submit = true;
+    this.categoryForm = this.fb.group({
+      name: ['', Validators.required],
+    });
   }
 
   constructor(
@@ -31,12 +41,29 @@ export class CategoryAddComponent implements OnInit {
     })
   }
 
+  get f() { return this.categoryForm.controls; }
+
+
   submitForm() {
-    this.categoryService.CreateCategory(this.categoryForm.value).subscribe(res => {
-      console.log('category added!')
+    this.submitted = true;
+    if (this.categoryForm.invalid) {
+      this.showMsg = false;
+      this.message = '';  
+      return;
+    } 
+    this.categoryService.CreateCategory(this.categoryForm.value,).subscribe((res:any) => {
+      if(res.status == 200){
+        this.showMsg = true;
+        this.submitted = false; 
+        this.showMsg = true;
+        this.message = res.message; 
+        this.categoryForm.reset();
+        $("#alert-msg").delay(500).fadeOut();       
+      } else {
+        
+      }
+
       //this.ngZone.run(() => this.router.navigateByUrl('/issues-list'))
     });
   }
-
-
 }

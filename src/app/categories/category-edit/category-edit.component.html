@@ -1,1 +1,27 @@
-<p>category-edit works!</p>
+<div class="container wrapper wrapper2">
+    <div class="row">
+        <!-- Form -->
+        <div class="col-md-12">
+            <h3>Add Category</h3>
+            <form [formGroup]="categoryUpdateForm" (ngSubmit)="updateForm()" novalidate>
+                <div class="form-group" [ngClass]="{'is-invalid': submitted && f.name.errors }">
+                    <label>Name</label>
+                    <input type="text" formControlName="name" class="form-control" maxlength="20">
+                    <div *ngIf="submitted && f.name.errors" style="font-size: 80%;color:#dc3545;">
+                        <div *ngIf="f.name.errors.required">Please enter name.</div>
+                    </div>
+                </div>
+                <button type="submit" (click)="updateForm()" class="btn btn-primary">Submit</button>
+                <span><button style="float:right" type="button" class="btn btn-success btn-sm move-right"
+                        routerLink="/categories">Show list</button></span>
+            </form>
+        </div>
+        <div *ngIf="showMsg" id="alert-msg">
+            <div class="col-md-12">
+                <p class="alert alert-success">
+                    <strong>{{message}}</strong>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

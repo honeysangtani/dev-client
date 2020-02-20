@@ -19,11 +19,24 @@ export class CategoryListComponent implements OnInit {
   constructor(
     private categoryService: CategoriesService,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.categoryService.GetCategories()
-    .subscribe(heroes => (this.categories = heroes));
+      .subscribe(heroes => (this.categories = heroes));
+  }
+
+  // Delete 
+  deleteCategory(data) {
+    var index = index = this.categories.map(x => { return x.name }).indexOf(data.name);
+    return this.categoryService.DeleteCategory(data.id).subscribe((res: any) => {
+      if (res.status == 200) {
+        this.categories.splice(index, 1)
+        console.log('category deleted!')
+      } else {
+
+      }
+    })
   }
 
 
@@ -46,6 +59,6 @@ export class CategoryListComponent implements OnInit {
   //   }
   // ]
 
-  
+
 
 }

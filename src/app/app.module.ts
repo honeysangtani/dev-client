@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http'; 
+import * as $ from 'jquery';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 

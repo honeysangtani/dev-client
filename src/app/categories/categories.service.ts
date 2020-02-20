@@ -18,33 +18,63 @@ export class CategoriesService {
 
   httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     })
   }
 
   // GET
   GetCategories(): Observable<Category> {
     return this.http.get<Category>(this.baseurl + '/categories/')
+      .pipe(
+        retry(1),
+        catchError(this.errorHandl)
+      )
+  }
+
+  // POST
+  CreateCategory(data): Observable<Category> {
+    var cat_name: any = {}
+    cat_name.name = data.name;
+
+    return this.http.post<Category>(this.baseurl + '/category-add/', JSON.stringify(cat_name), this.httpOptions)
+      .pipe(
+        retry(1),
+        catchError(this.errorHandl)
+      )
+  }
+
+  // GET
+  GetCategory(id): Observable<Category> {
+    return this.http.get<Category>(this.baseurl + '/category/' + id)
+      .pipe(
+        retry(1),
+        catchError(this.errorHandl)
+      )
+  }
+
+  // UPDATE
+  updateCategory(id, data): Observable<Category> {
+    return this.http.post<Category>(this.baseurl + '/category-edit/' + id, JSON.stringify(data), this.httpOptions)
+      .pipe(
+        retry(1),
+        catchError(this.errorHandl)
+      )
+  }
+
+  // DELETE
+  DeleteCategory(id){
+    return this.http.get<Category>(this.baseurl + '/category-delete/' + id, this.httpOptions)
     .pipe(
       retry(1),
       catchError(this.errorHandl)
     )
   }
 
-  // POST
-  CreateCategory(data): Observable<Category> {
-    console.log(data);
-    return this.http.post<Category>(this.baseurl + '/category-add/', JSON.stringify(data), this.httpOptions)
-    .pipe(
-      retry(1),
-      catchError(this.errorHandl)
-    )
-  } 
 
   // Error handling
   errorHandl(error) {
     let errorMessage = '';
-    if(error.error instanceof ErrorEvent) {
+    if (error.error instanceof ErrorEvent) {
       // Get client-side error
       errorMessage = error.error.message;
     } else {

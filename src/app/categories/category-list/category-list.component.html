@@ -1,29 +1,32 @@
-
 <div class="container wrapper">
     <div class="row">
         <!-- Issue table -->
         <div class="col-md-12">
-            <div class="inner">                
-                <div style="margin-top: 5px;"> 
-                    <span style="float:left; font-size:25px;"><p>Categories</p></span>
+            <div class="inner">
+                <div style="margin-top: 5px;">
+                    <span style="float:left; font-size:25px;">
+                        <p>Categories</p>
+                    </span>
                     <span><button style="float:right" type="button" class="btn btn-success btn-sm move-right"
-                        routerLink="/category-add">Add</button></span>
+                            routerLink="/category-add">Add</button></span>
                 </div>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Name</th>                            
+                            <th scope="col">Name</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let category of categories">
                             <th scope="row">{{category.id}}</th>
-                            <td>{{category.name}}</td>                            
+                            <td>{{category.name}}</td>
                             <td>
                                 <button type="button" class="btn btn-success btn-sm move-right"
-                                    [routerLink]="['/category-id/', category.id]">Edit</button>
+                                    [routerLink]="['/category/', category.id]">Edit</button>
+                                <button type="button" class="btn btn-danger btn-sm"
+                                    (click)="deleteCategory(category)">Delete</button>
                                 <!-- <button type="button" class="btn btn-danger btn-sm"
                                     (click)="deleteIusse(issues)">Remove</button> -->
                             </td>
