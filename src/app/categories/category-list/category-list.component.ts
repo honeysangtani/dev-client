@@ -5,6 +5,9 @@ import { ActivatedRoute } from '@angular/router';
 import { CategoriesService, Category } from '../categories.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ConfirmationModalComponent, NgbdModalContent } from '../../confirmation-modal/confirmation-modal.component';
+import { NgbActiveModal, NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-category-list',
@@ -15,10 +18,13 @@ import { Router } from '@angular/router';
 export class CategoryListComponent implements OnInit {
 
   categories: any = [];
+  showMsg = false;
+  message = '';
 
   constructor(
     private categoryService: CategoriesService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private modalService: NgbModal,
   ) { }
 
   ngOnInit() {
@@ -28,18 +34,32 @@ export class CategoryListComponent implements OnInit {
 
   // Delete 
   deleteCategory(data) {
+    console.log(data);
     var index = index = this.categories.map(x => { return x.name }).indexOf(data.name);
     return this.categoryService.DeleteCategory(data.id).subscribe((res: any) => {
       if (res.status == 200) {
         this.categories.splice(index, 1)
         console.log('category deleted!')
+        this.showMsg = true;
+        this.message = "Category deleted successfully."
+        $("#alert-msg").delay(500).fadeOut(); 
       } else {
 
       }
     })
   }
 
-
+  openModal(module) {
+    console.log(NgbdModalContent);
+    const modalRef = this.modalService.open(NgbdModalContent);
+    modalRef.componentInstance.module_name = 'category';
+    modalRef.result.then((result) => {
+      console.log(result);
+      if (result && result == 'Yes') {
+        this.deleteCategory(module);
+      }
+    });
+  }
 
   // categories = [
   //   {
